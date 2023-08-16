@@ -6,7 +6,7 @@
   <a href="https://betintellect.co" alt="betintellect website coming soon"target="_blank">
   
   <picture>
-    <img src="https://github.com/imanirak/betintellect/blob/main/betintellectlogo.png" width="280" alt="Logo"/>
+    <img src="https://github.com/imanirak/BetIntellect/blob/main/betintellectlogo.png" width="280" alt="Logo"/>
   </picture>
    
   </a>
