@@ -1,30 +1,34 @@
-from django.http import HttpResponse
-import requests
-from requests import get, auth
-import environ
-env = environ.Env()
+from django.shortcuts import render
+from nba_api.stats.endpoints import commonplayerinfo
+from .models import Player
 
 
-client_id = env('client_id')
-client_secret = env('client_secret')
-a = auth.HTTPBasicAuth(client_id, client_secret)
-url = "https://api.seatgeek.com/2/taxonomies"
-res = requests.get(url, auth=a)
-data = res.json()
+def get_nba_player_info(player_id):
+    player_info = commonplayerinfo.CommonPlayerInfo(player_id=player_id)
+    return player_info.get_normalized_dict()['CommonPlayerInfo'][0]
 
 
-def index(request):
-      
-    return HttpResponse(data)
+def dashboard(request):
+    # Fetch NBA player data using the nba_api package
+    player_id = 203999  # Replace with the actual player ID
+    player_data = get_nba_player_info(player_id)
+
+    # Create or update Player object in the database
+    player, created = Player.objects.get_or_create(
+        nba_id=player_data['PERSON_ID'],
+        defaults={
+            'full_name': player_data['DISPLAY_FIRST_LAST'],
+            'position': player_data['POSITION'],
+        }
+    )
+
+    context = {
+        'player': player,
+    }
+
+    return render(request, 'dashboard.html', context)
 
 
-def baseball(request, team):
-    return HttpResponse("Baseball page")
-
-
-def basketball(request):
-    return HttpResponse("basketball page")
-
-
-def football(request):
-    return HttpResponse("football page")
+#grab all players from specific teams
+#filter through them all
+#list top players
