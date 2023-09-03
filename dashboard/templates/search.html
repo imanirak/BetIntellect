@@ -1,0 +1,6 @@
+<!-- Search Bar -->
+<form action="{% url 'dashboard:search' %}" method="POST">
+  {% csrf_token %}
+  <input class="search" type="text" name="q" placeholder="Search">
+  <input type="submit" value="Submit">
+</form> 
