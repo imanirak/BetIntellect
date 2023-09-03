@@ -4,12 +4,19 @@ from nba_api.stats.static import players
 from .models import Player
 
 
-def get_all_players():
+def get_player_by_name(player_name: str):
     all_players = players.get_players()
-    name = input() 
-    [player for player in all_players if player['full_name'] == name][0]
-    player_id = f"{name} is player"
-    return player_id
+    found_player = [player for player in all_players
+                    if player['full_name'] == player_name][0]
+    context = {
+        'player_id': found_player['id'],
+        'player_full_name': found_player['full_name'],
+    }
+
+    return print(context)
+
+
+get_player_by_name("LeBron James")
 
 
 def get_nba_player_info(player_id):
@@ -38,6 +45,3 @@ def dashboard(request):
     return render(request, 'dashboard.html', context)
 
 
-#grab all players from specific teams
-#filter through them all
-#list top players
